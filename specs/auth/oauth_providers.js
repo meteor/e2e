@@ -43,7 +43,7 @@ module.exports = [
       $('#pass').type(password);
       $('input[name=login]').click();
     }
-  },
+  },/*
   {
     name: 'twitter',
     userDisplayName: 'Auth Meteor',
@@ -67,7 +67,7 @@ module.exports = [
       $('#passwd').type(password);
       $('a[action-type=submit]').click();
     }
-  },
+  },*/
   {
     name: 'meteor-developer',
     userDisplayName: 'meteorauthqa',

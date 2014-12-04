@@ -22,7 +22,7 @@ var browserDescriptors = exports.browserDescriptors = {
   firefox: {
     browserName: 'firefox',
     version: 33
-  },
+  },/*
   safari: {
     browserName: 'safari',
     version: 8,
@@ -38,7 +38,7 @@ var browserDescriptors = exports.browserDescriptors = {
     browserName: 'internet explorer',
     version: 9,
     platform: 'Windows 7'
-  },
+  },*/
   ie10: {
     browserName: 'internet explorer',
     version: 10,
