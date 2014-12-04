@@ -53,8 +53,8 @@ PACKAGES=(
   service-configuration
 )
 "$METEOR" add ${PACKAGES[@]}
-cp $TEMPLATE_DIR/auth-e2e.html ./auth-e2e.html
-cp $TEMPLATE_DIR/auth-e2e.js ./auth-e2e.js
+cp "$TEMPLATE_DIR/auth-e2e.html" ./auth-e2e.html
+cp "$TEMPLATE_DIR/auth-e2e.js" ./auth-e2e.js
 
 # The Auth QA app is deployed at auth-e2e.meteor.com
 SITE=rainforest-auth-qa
