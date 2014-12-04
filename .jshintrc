@@ -1,0 +1,17 @@
+{
+  "node": true,
+  "evil": true,
+  "strict": false,
+  "quotmark": false,
+  "globals": {
+    "it": true,
+    "describe": true,
+    "before": true,
+    "after": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "expect": true,
+    "browser": true,
+    "$": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "meteor-e2e",
+  "version": "1.0.0",
+  "description": "e2e tests for Meteor",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meteor/e2e.git"
+  },
+  "dependencies": {
+    "byline": "^4.1.1",
+    "chai": "^1.10.0",
+    "chalk": "^0.5.1",
+    "fibers": "^1.0.2",
+    "minimist": "^1.1.0",
+    "mocha": "^2.0.1",
+    "sprintf-js": "^1.0.2",
+    "underscore": "^1.7.0",
+    "wd": "^0.3.10"
+  }
+}
