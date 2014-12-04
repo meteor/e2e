@@ -1,14 +1,12 @@
 #!/bin/bash
 set -e
 
-if [ -z $1 ]; then
+if [ -z $METEOR ]; then
     echo "This script is to be used in advance of running automated Auth QA on Rainforest"
     echo
-    echo "Usage: ./deploy.sh RELEASE"
+    echo "Usage: METEOR=/path/to/meteor ./deploy.sh"
     exit 1
 fi
-
-RELEASE=$1
 
 cd `dirname "$0"`
 TEMPLATE_DIR=`pwd`
@@ -37,7 +35,7 @@ echo -n "* Logging in with the test account..."
 
 # We are creating the app from scratch to ensure fresh installation
 # and configuration of the account packages
-meteor --release $RELEASE create auth-e2e >> $LOG 2>&1
+$METEOR --release create auth-e2e >> $LOG 2>&1
 pushd auth-e2e > /dev/null
 
 # Add all the packages and copy over template app files
@@ -53,7 +51,7 @@ PACKAGES=(
   accounts-password
   service-configuration
 )
-meteor add ${PACKAGES[@]}
+$METEOR add ${PACKAGES[@]}
 cp $TEMPLATE_DIR/auth-e2e.html ./auth-e2e.html
 cp $TEMPLATE_DIR/auth-e2e.js ./auth-e2e.js
 
@@ -62,7 +60,7 @@ SITE=rainforest-auth-qa
 echo
 echo -n "* Deploying the test app to $SITE..."
 # `|| true` so that the script doesn't fail if the the app doesn't exist
-meteor deploy -D $SITE >> $LOG 2>&1 || true
-meteor deploy $SITE >> $LOG 2>&1
+$METEOR deploy -D $SITE >> $LOG 2>&1 || true
+$METEOR deploy $SITE >> $LOG 2>&1
 echo
 echo DONE
