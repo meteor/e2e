@@ -31,7 +31,7 @@ trap cleanup EXIT
 # Now, login as rainforestqa. This way, anyone can access apps
 # deployed by this script.
 echo -n "* Logging in with the test account..."
-(echo rainforestqa; sleep 0.2; echo rainforestqa;) | "$METEOR" login
+(echo rainforestqa; sleep 2; echo rainforestqa;) | "$METEOR" login
 
 # We are creating the app from scratch to ensure fresh installation
 # and configuration of the account packages
