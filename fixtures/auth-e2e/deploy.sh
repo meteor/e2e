@@ -35,7 +35,7 @@ echo -n "* Logging in with the test account..."
 
 # We are creating the app from scratch to ensure fresh installation
 # and configuration of the account packages
-"$METEOR" --release create auth-e2e >> $LOG 2>&1
+"$METEOR" create auth-e2e >> $LOG 2>&1
 pushd auth-e2e > /dev/null
 
 # Add all the packages and copy over template app files
