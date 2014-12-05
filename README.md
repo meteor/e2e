@@ -7,6 +7,7 @@
 
     export SAUCE_LABS_ACCESS_KEY=...    # Find values in 1Password under "e2e"
     export OAUTH_PROVIDERS_PASSWORD=...
+    export OAUTH_PROVIDER_SECRETS=...
 
     node run [files ...] [--local] [--browsers=all] [--concurrency=5] [--stack]
 
