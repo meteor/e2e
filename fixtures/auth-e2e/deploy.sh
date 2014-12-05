@@ -21,6 +21,7 @@ pushd "$TEMP_DIR" > /dev/null
 # credentials for the currently logged-in user.  Restore that file if
 # this script exits.
 METEORSESSION_RESTORE="$TEMP_DIR/.meteorsession-restore"
+touch ~/.meteorsession # Make one if it doesn't exist
 cp ~/.meteorsession "$METEORSESSION_RESTORE"
 function cleanup {
     echo "Logs can be found at $TEMP_DIR/rainforestqa-deploy.log"
@@ -62,6 +63,10 @@ echo
 echo -n "* Deploying the test app to $SITE..."
 # `|| true` so that the script doesn't fail if the the app doesn't exist
 "$METEOR" deploy -D $SITE >> $LOG 2>&1 || true
-"$METEOR" deploy $SITE >> $LOG 2>&1
+
+echo $OAUTH_PROVIDER_SECRETS > secrets.json
+"$METEOR" deploy --settings secrets.json $SITE >> $LOG 2>&1
+rm secrets.json
+
 echo
 echo DONE

@@ -23,54 +23,57 @@ if (Meteor.isServer) {
       }
     });
 
-    if (!process.env.OAUTH_PROVIDER_SECRETS) {
-      console.error("Need to set the OAUTH_PROVIDER_SECRETS environment variable");
-      process.exit(1);
+    var secrets = Meteor.settings;
+    var secret = function (provider) {
+      if (!secrets[provider]) {
+        console.error("Need to set `Meteor.settings[\"" + provider + "\"]`");
+        process.exit(1);
+      };
+      return secrets[provider];
     };
-    var secrets = JSON.parse(process.env.OAUTH_PROVIDER_SECRETS);
 
     // intentionally calling the configureLoginService method
     // here instead of direct insert, since this is the method
     // being called on the server when an actual user configures it.
     Meteor.call('configureLoginService', {
       service: "facebook",
-      secret: secrets.facebook,
+      secret: secret("facebook"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "google",
       clientId: "262689297883-d14f2erj5dlfhk6nlvhcldhq0624op7q.apps.googleusercontent.com",
-      secret: secrets.google,
+      secret: secret("google"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "twitter",
       consumerKey: "0eRD2Z28NjAMjQGeqFXM8MMY5",
-      secret: secrets.twitter,
+      secret: secret("twitter"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "github",
       clientId: "d4b54e5ba3611bc14c06",
-      secret: secrets.github,
+      secret: secret("github"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "weibo",
       clientId: "819563028",
-      secret: secrets.weibo,
+      secret: secret("weibo"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "meetup",
       clientId: "mvnukfi6bdoacs03tkirj4394n",
-      secret: secrets.meetup,
+      secret: secret("meetup"),
       loginStyle: "popup"
     });
     Meteor.call('configureLoginService', {
       service: "meteor-developer",
       clientId: "u6q4sghbCdyCtkTpr",
-      secret: secrets["meteor-developer"],
+      secret: secrets("meteor-developer"),
       loginStyle: "popup"
     });
     // validate user
