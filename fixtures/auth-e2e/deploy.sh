@@ -24,7 +24,7 @@ METEORSESSION_RESTORE="$TEMP_DIR/.meteorsession-restore"
 touch ~/.meteorsession # Make one if it doesn't exist
 cp ~/.meteorsession "$METEORSESSION_RESTORE"
 function cleanup {
-    tail "$TEMP_DIR/rainforestqa-deploy.log"
+    tail "$LOG"
     cp "$METEORSESSION_RESTORE" ~/.meteorsession
 }
 trap cleanup EXIT
