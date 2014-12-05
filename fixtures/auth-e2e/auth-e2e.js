@@ -73,7 +73,7 @@ if (Meteor.isServer) {
     Meteor.call('configureLoginService', {
       service: "meteor-developer",
       clientId: "u6q4sghbCdyCtkTpr",
-      secret: secrets("meteor-developer"),
+      secret: secret("meteor-developer"),
       loginStyle: "popup"
     });
     // validate user
