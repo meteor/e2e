@@ -37,6 +37,7 @@ if (Meteor.isServer) {
     // being called on the server when an actual user configures it.
     Meteor.call('configureLoginService', {
       service: "facebook",
+      appId: "461508060653790",
       secret: secret("facebook"),
       loginStyle: "popup"
     });
