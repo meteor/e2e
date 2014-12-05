@@ -17,16 +17,21 @@ LOG="$TEMP_DIR/auth-e2e-deploy.log"
 # a log file and the ~/.meteorsession file to restore here.
 pushd "$TEMP_DIR" > /dev/null
 
-# Store the original contents in ~/.meteorsession, which contain the
-# credentials for the currently logged-in user.  Restore that file if
-# this script exits.
-METEORSESSION_RESTORE="$TEMP_DIR/.meteorsession-restore"
-touch ~/.meteorsession # Make one if it doesn't exist
-cp ~/.meteorsession "$METEORSESSION_RESTORE"
-function cleanup {
+if [ -a ~/.meteorsession ]; then
+  # Store the original contents in ~/.meteorsession, which contain the
+  # credentials for the currently logged-in user.  Restore that file if
+  # this script exits.
+  METEORSESSION_RESTORE="$TEMP_DIR/.meteorsession-restore"
+  cp ~/.meteorsession "$METEORSESSION_RESTORE"
+  function cleanup {
+     tail "$LOG"
+     cp "$METEORSESSION_RESTORE" ~/.meteorsession
+  }
+else
+  function cleanup {
     tail "$LOG"
-    cp "$METEORSESSION_RESTORE" ~/.meteorsession
-}
+  }
+fi
 trap cleanup EXIT
 
 # Now, login as rainforestqa. This way, anyone can access apps
