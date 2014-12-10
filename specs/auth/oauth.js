@@ -3,15 +3,15 @@ var providers = require('./oauth_providers');
 describe('A small app with accounts', function () {
 
   var openDropdown = function () {
-    $("#login-sign-in-link, #login-name-link").click();
+    find("#login-sign-in-link, #login-name-link").click();
   };
   var closeDropdown = function () {
-    $("a.login-close-text").click();
+    find("a.login-close-text").click();
   };
 
   it('shows a "Sign in" dropdown', function () {
     browser.get('http://rainforest-auth-qa.meteor.com');
-    expect($("#login-sign-in-link").text()).to.contain("Sign in ▾");
+    expect(find("#login-sign-in-link").text()).to.contain("Sign in ▾");
   });
 
   it('has password login', function () {
@@ -19,22 +19,22 @@ describe('A small app with accounts', function () {
 
     browser.waitFor('#login-email');
     browser.waitFor('#login-password');
-    expect($("#login-buttons-password").text()).to.contain("Sign in");
+    expect(find("#login-buttons-password").text()).to.contain("Sign in");
 
     closeDropdown();
   });
 
   var startSignIn = function (providerName) {
-    $('#login-buttons-' + providerName).click();
+    find('#login-buttons-' + providerName).click();
   };
 
   var expectSignedIn = function (userDisplayName) {
-    expect($('#login-name-link').text()).to.contain(userDisplayName);
+    expect(find('#login-name-link').text()).to.contain(userDisplayName);
   };
 
   var signOut = function () {
-    $('#login-buttons-logout').click();
-    expect($("#login-sign-in-link").text()).to.contain("Sign in ▾");
+    find('#login-buttons-logout').click();
+    expect(find("#login-sign-in-link").text()).to.contain("Sign in ▾");
   };
 
   providers.forEach(function (provider) {
@@ -46,7 +46,7 @@ describe('A small app with accounts', function () {
       it('signs in', function () {
 
         openDropdown();
-        expect($("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
+        expect(find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
         startSignIn(provider.name);
 
         // Should show a popup. Test that when we close the pop-up we
