@@ -8,6 +8,7 @@ if (!process.env.OAUTH_PROVIDERS_PASSWORD) {
 var password = process.env.OAUTH_PROVIDERS_PASSWORD;
 
 module.exports = [
+  /*
   {
     name: 'github',
     userDisplayName: 'Meteor AuthQA',
@@ -43,7 +44,7 @@ module.exports = [
       $('#pass').type(password);
       $('input[name=login]').click();
     }
-  },/*
+  },
   {
     name: 'twitter',
     userDisplayName: 'Auth Meteor',
@@ -67,7 +68,7 @@ module.exports = [
       $('#passwd').type(password);
       $('a[action-type=submit]').click();
     }
-  },*/
+  },
   {
     name: 'meteor-developer',
     userDisplayName: 'meteorauthqa',
@@ -82,7 +83,7 @@ module.exports = [
     signInInSecondPopup: function () {
       $('a.login-with-account').click(); // "Use this account"
     }
-  },
+  },*/
   {
     name: 'meetup',
     userDisplayName: 'Auth Meteor',

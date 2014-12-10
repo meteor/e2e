@@ -3,7 +3,7 @@ var providers = require('./oauth_providers');
 describe('A small app with accounts', function () {
 
   var openDropdown = function () {
-    $("#login-sign-in-link, #login-name-link").click();
+    $("#login-sign-in-link, #login-name-link", 30000).click();
   };
   var closeDropdown = function () {
     $("a.login-close-text").click();

@@ -14,6 +14,7 @@ exports.remote = {
 // WebDriver Browser Descriptors
 // https://saucelabs.com/platforms/webdriver
 var browserDescriptors = exports.browserDescriptors = {
+  /*
   chrome: {
     browserName: 'chrome',
     version: 38,
@@ -22,7 +23,7 @@ var browserDescriptors = exports.browserDescriptors = {
   firefox: {
     browserName: 'firefox',
     version: 33
-  },/*
+  },
   safari: {
     browserName: 'safari',
     version: 8,
@@ -33,12 +34,12 @@ var browserDescriptors = exports.browserDescriptors = {
     version: 8,
     platform: 'Windows XP',
     prerun: 'http://s3.amazonaws.com/meteor-saucelabs/disable_ie8_slow_javascript_warning.bat'
-  },
+  },*/
   ie9: {
     browserName: 'internet explorer',
     version: 9,
     platform: 'Windows 7'
-  },*/
+  }/*,
   ie10: {
     browserName: 'internet explorer',
     version: 10,
@@ -48,7 +49,7 @@ var browserDescriptors = exports.browserDescriptors = {
     browserName: 'internet explorer',
     version: 11,
     platform: 'Windows 8.1'
-  }
+  }*/
 };
 
 // Browser group configurations.
