@@ -9,7 +9,7 @@
     export OAUTH_PROVIDERS_PASSWORD=...
     export OAUTH_PROVIDER_SECRETS=...
 
-    node run [files ...] [--local] [--browsers=all] [--concurrency=5] [--stack]
+    node run [files ...] [--local] [--browsers=all] [--concurrency=5]
 
   Options:
 
@@ -25,8 +25,6 @@
 
     --concurrency   Maximum number of browsers to launch at the same time. The
                     default is what we have on our SauceLabs account.
-
-    --stack         Log full error stacks.
 ```
 
 ## Test Authoring
