@@ -38,7 +38,7 @@ trap cleanup EXIT
 # deployed by this script.
 echo -n "* Logging in with the test account..."
 "$METEOR" help > /dev/null  # Download dev bundle
-(echo rainforestqa; sleep 2s; echo rainforestqa;) | "$METEOR" login
+(echo rainforestqa; sleep 4s; echo rainforestqa;) | "$METEOR" login
 
 # We are creating the app from scratch to ensure fresh installation
 # and configuration of the account packages
