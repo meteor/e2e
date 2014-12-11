@@ -7,4 +7,12 @@
   <h1>This is the Meteor Auth QA page.</h1>
   <p>Email address to use in step 49 and beyond: <b id="browser-email" style="color:#f00">{{browserId}}@qa.com</b></p>
   {{> loginButtons}}
+
+  {{#if browserErrors}}
+    <hr />
+    <h2>Browser errors:</h2>
+    {{#each browserErrors}}
+      <p style="color:#f00">{{msg}} at {{url}}:{{line}}</p>
+    {{/each}}
+  {{/if}}
 </body>

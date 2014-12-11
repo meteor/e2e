@@ -91,6 +91,10 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+  BrowserErrors = new Meteor.Collection(null);
+  window.onerror = function (msg, url, line) {
+    BrowserErrors.insert({msg: msg, url: url, line: line});
+  };
   var sniffBrowserId = function () {
     var UA = navigator.userAgent;
     if (UA.match(/Android/)) return 'android';
@@ -105,7 +109,8 @@ if (Meteor.isClient) {
   // Generate a browserId so that testers using different browsers
   // create different user accounts (avoid clashing)
   Template.body.helpers({
-    browserId: sniffBrowserId
+    browserId: sniffBrowserId,
+    browserErrors: function () { return BrowserErrors.find().fetch(); }
   });
   Meteor.call('removeTestAccount', sniffBrowserId());
 }
