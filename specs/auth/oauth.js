@@ -47,6 +47,7 @@ describe('A small app with accounts', function () {
 
       it('signs in', function () {
 
+        browser.get('http://rainforest-auth-qa.meteor.com');
         openDropdown();
         expect($("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
         startSignIn(provider.name);
