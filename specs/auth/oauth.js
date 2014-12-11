@@ -8,7 +8,7 @@ describe('A small app with accounts', function () {
   var closeDropdown = function () {
     $("a.login-close-text").click();
   };
-
+/*
   it('shows a "Sign in" dropdown', function () {
     browser.get('http://rainforest-auth-qa.meteor.com');
     expect($("#login-sign-in-link").text()).to.contain("Sign in ▾");
@@ -23,7 +23,7 @@ describe('A small app with accounts', function () {
 
     closeDropdown();
   });
-
+*/
   var startSignIn = function (providerName) {
     $('#login-buttons-' + providerName).click();
   };
@@ -39,9 +39,11 @@ describe('A small app with accounts', function () {
 
   providers.forEach(function (provider) {
     describe("- " + provider.name + ' login', function () {
+/*
       before(function () {
         browser.refresh();
       });
+*/
 
       it('signs in', function () {
 
