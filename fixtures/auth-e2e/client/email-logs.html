@@ -1,0 +1,15 @@
+<template name="emailLogs">
+  <div id="email-logs-container">
+    <h2>Email Flow Logs</h2>
+    <ul id="email-logs">
+      {{#each logs}}
+        <li class="email-log">
+          <p>from: {{from}}</p>
+          <p>to: {{to}}</p>
+          <p>subject: {{subject}}</p>
+          <p>{{text}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</template>

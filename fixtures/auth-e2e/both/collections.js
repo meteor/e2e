@@ -1,0 +1,1 @@
+EmailFlowLogs = new Mongo.Collection('email-flow-logs');
