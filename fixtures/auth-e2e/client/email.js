@@ -32,7 +32,7 @@ Template.emailLogs.events({
 
   'click #delete-test-account': function () {
     Session.set('actionSuccess', false);
-    Meteor.call('deleteTestAccount', Session.get('browser'), function () {
+    Meteor.call('removeTestAccount', Session.get('browser'), function () {
       Session.set('actionSuccess', true);
     });
   },
