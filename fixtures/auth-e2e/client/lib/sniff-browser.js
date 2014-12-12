@@ -21,9 +21,6 @@ Session.set('browser', browser);
 // the tests on a reload without having to re-deploy everytime.
 Meteor.call('removeTestAccount', browser);
 
-// clear all email logs associated with this browser
-Meteor.call('clearEmailLogs', browser);
-
 // Generate a browserId so that testers using different browsers
 // create different user accounts (avoid clashing)
 Template.body.helpers({

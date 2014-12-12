@@ -5,7 +5,7 @@ Template.emailLogs.helpers({
   logs: function () {
     return EmailFlowLogs.find({
       to: Session.get('browser') + '@qa.com'
-    });
+    }, { sort: { timestamp: -1 }});
   },
 
   actionSuccess: function () {
@@ -15,6 +15,13 @@ Template.emailLogs.helpers({
 });
 
 Template.emailLogs.events({
+
+  'click #clear-email-logs': function () {
+    Session.set('actionSuccess', false);
+    Meteor.call('clearEmailLogs', Session.get('browser'), function () {
+      Session.set('actionSuccess', true);
+    });
+  },
 
   'click #create-test-account': function () {
     Session.set('actionSuccess', false);

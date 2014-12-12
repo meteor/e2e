@@ -3,27 +3,22 @@
 // selenium tests.
 Email.send = function (options) {
   options.time = new Date().toString();
+  options.timestamp = Date.now();
   EmailFlowLogs.insert(options);
 };
 
-Meteor.methods({
+Meteor.startup(function () {
   
-  clearEmailLogs: function (browser) {
-    EmailFlowLogs.remove({
-      to: browser + '@qa.com'
-    });
-  },
+  // clear ALL email logs
+  EmailFlowLogs.remove({});
 
-  sendNewVerificationEmail: function (browser) {
-    Meteor.call('removeTestAccount', browser);
-    var userId = Accounts.createUser({ email: browser + '@qa.com' });
-    Accounts.sendEnrollmentEmail(userId);
-  },
-
-  configVerificationEmail: function (state) {
-    Accounts.config({
-      sendVerificationEmail: !! state
+  // create a common test account used in email flows
+  // (the account to login with in the second window)
+  try {
+    Accounts.createUser({
+      email: 'email@qa.com',
+      password: '123456'
     });
-  }
+  } catch (e) {}
 
 });

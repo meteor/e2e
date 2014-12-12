@@ -2,21 +2,22 @@
   <div id="email-logs-container">
     <h2>Email Flow Logs</h2>
     <div>
+      <a id="clear-email-logs">Clear email logs</a><br>
       <a id="delete-test-account">Delete test account</a><br>
       <a id="create-test-account">Create test account</a><br>
-      <a id="test-send-enrollment-email">Test sendEnrollmentEmail</a><br>
+      <a id="test-send-enrollment-email">Test Accounts.sendEnrollmentEmail</a><br>
       {{#if actionSuccess}}
-        <span id="server-action-state">OK</span>
+        <span id="server-action-ok">OK</span>
       {{/if}}
     </div>
     <ul id="email-logs">
       {{#each logs}}
         <li class="email-log">
-          <p>from: {{from}}</p>
-          <p>to: {{to}}</p>
-          <p>subject: {{subject}}</p>
-          <p>at: {{time}}</p>
-          <p>{{text}}</p>
+          <p>at: <span class="email-at">{{timestamp}}</span></p>
+          <p>from: <span class="email-from">{{from}}</span></p>
+          <p>to: <span class="email-to">{{to}}</span></p>
+          <p>subject: <span class="email-subject">{{subject}}</span></p>
+          <p class="email-text">{{text}}</p>
         </li>
       {{/each}}
     </ul>

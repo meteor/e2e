@@ -1,24 +1,3 @@
-Meteor.methods({
-  
-  // remove a browser-specific test account.
-  // this will be called from the client for every new session.
-  removeTestAccount: function (browser) {
-    Meteor.users.remove({
-      'emails.0.address': browser + '@qa.com'
-    });
-  },
-
-  // convenience for additional testing
-  createTestAccount: function (browser) {
-    Meteor.call('removeTestAccount');
-    Accounts.createUser({
-      email: browser + '@qa.com',
-      password: '123456'
-    });
-  }
-
-});
-
 // test validate new user creation
 Meteor.startup(function () {
 

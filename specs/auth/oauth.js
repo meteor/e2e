@@ -54,13 +54,13 @@ describe('A small app with accounts', function () {
 
         // Should show a popup. Test that when we close the pop-up we
         // don't lose the ability to then log in again afterwards.
-        browser.focusPopup();
+        browser.focusSecondWindow();
         provider.waitForPopupContents();
         browser.close();
 
         browser.focusMainWindow();
         startSignIn(provider.name);
-        browser.focusPopup();
+        browser.focusSecondWindow();
         provider.waitForPopupContents();
         provider.signInInPopup();
 
@@ -79,7 +79,7 @@ describe('A small app with accounts', function () {
         startSignIn(provider.name);
 
         if (provider.signInInSecondPopup) {
-          browser.focusPopup();
+          browser.focusSecondWindow();
           provider.signInInSecondPopup();
           browser.focusMainWindow();
         }

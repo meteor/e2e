@@ -1,12 +1,24 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
 #email-logs-container {
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
-  width: 500px;
+  min-width: 40%;
+  max-width: 50%;
+  box-sizing: border-box;
   overflow-y: scroll;
   padding: 0 30px;
   background-color: #eee;
+}
+
+#email-logs-container a {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 #email-logs {
