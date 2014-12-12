@@ -1,15 +1,26 @@
 Meteor.methods({
+  
   // remove a browser-specific test account.
   // this will be called from the client for every new session.
-  removeTestAccount: function (email) {
+  removeTestAccount: function (browser) {
     Meteor.users.remove({
-      'emails.0.address': email + '@qa.com'
+      'emails.0.address': browser + '@qa.com'
+    });
+  },
+
+  // convenience for additional testing
+  createTestAccount: function (browser) {
+    Accounts.createUser({
+      email: browser + '@qa.com',
+      password: '123456'
     });
   }
+
 });
 
 // test validate new user creation
 Meteor.startup(function () {
+
   Accounts.validateNewUser(function (user) {
     if (user.emails && user.emails[0].address === 'invalid@qa.com') {
       // test custom message
@@ -23,4 +34,5 @@ Meteor.startup(function () {
       return true;
     }
   });
+
 });

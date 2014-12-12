@@ -1,12 +1,20 @@
 <template name="emailLogs">
   <div id="email-logs-container">
     <h2>Email Flow Logs</h2>
+    <div>
+      <a id="delete-test-account">Delete test account</a> |
+      <a id="create-test-account">Create test account</a>
+      {{#if actionSuccess}}
+        <span id="server-action-state">OK</span>
+      {{/if}}
+    </div>
     <ul id="email-logs">
       {{#each logs}}
         <li class="email-log">
           <p>from: {{from}}</p>
           <p>to: {{to}}</p>
           <p>subject: {{subject}}</p>
+          <p>at: {{time}}</p>
           <p>{{text}}</p>
         </li>
       {{/each}}
