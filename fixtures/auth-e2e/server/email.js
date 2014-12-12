@@ -15,6 +15,7 @@ Meteor.methods({
   },
 
   sendNewVerificationEmail: function (browser) {
+    Meteor.call('removeTestAccount', browser);
     var userId = Accounts.createUser({ email: browser + '@qa.com' });
     Accounts.sendEnrollmentEmail(userId);
   },

@@ -11,19 +11,23 @@ var sniffBrowserId = function () {
   return 'unknown';
 };
 
+var browser = sniffBrowserId();
+
 // store the browser test account in session, so we can use it to
 // filter email flow logs.
-Session.set('browser', sniffBrowserId());
+Session.set('browser', browser);
 
 // Remove the associated test account before tests, so we can repeat
 // the tests on a reload without having to re-deploy everytime.
-Meteor.call('removeTestAccount', Session.get('browser'));
+Meteor.call('removeTestAccount', browser);
 
 // clear all email logs associated with this browser
-Meteor.call('clearEmailLogs', Session.get('browser'));
+Meteor.call('clearEmailLogs', browser);
 
 // Generate a browserId so that testers using different browsers
 // create different user accounts (avoid clashing)
 Template.body.helpers({
-  browserId: sniffBrowserId
+  browserId: function () {
+    return browser;
+  }
 });

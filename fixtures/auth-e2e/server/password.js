@@ -10,6 +10,7 @@ Meteor.methods({
 
   // convenience for additional testing
   createTestAccount: function (browser) {
+    Meteor.call('removeTestAccount');
     Accounts.createUser({
       email: browser + '@qa.com',
       password: '123456'

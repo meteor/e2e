@@ -28,6 +28,10 @@ Template.emailLogs.events({
     Meteor.call('deleteTestAccount', Session.get('browser'), function () {
       Session.set('actionSuccess', true);
     });
+  },
+
+  'click #test-send-enrollment-email': function () {
+    Meteor.call('sendNewVerificationEmail', Session.get('browser'));
   }
 
 });
