@@ -54,6 +54,14 @@ module.exports = [
       find('#username_or_email').type(email);
       find('#password').type(password);
       find('#allow').click();
+
+      // Mysteriously, on some browsers, Twitter requires also
+      // clicking on "Authorize App" on every sign in.
+      try {
+        find('#allow', 30000).click();
+      } catch (e) {
+        // Twitter decided not to require this step this time.  Why?
+      }
     }
   },
   {
