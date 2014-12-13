@@ -8,7 +8,7 @@ describe('Auth Email -', function () {
   // assert content on the first email in the list
   var assertEmail = function (options) {
     for (var key in options) {
-      expect(find('.email-log:first-child .email-' + key).text())
+      expect(find('.email-log:first-child .email-' + key, 30000).text())
         .to.contain(options[key]);
     }
   };
@@ -17,11 +17,11 @@ describe('Auth Email -', function () {
   var openNewWindowAndLogin = function () {
     browser.newWindow('http://' + testURL);
     browser.focusSecondWindow();
-    find('#login-sign-in-link').click();
+    find('#login-sign-in-link', 30000).click();
     find('#login-email').type('email@qa.com');
     find('#login-password').type('123456');
     find('#login-buttons-password').click();
-    expect(find('#login-name-link').text()).to.contain('email@qa.com');
+    expect(find('#login-name-link', 30000).text()).to.contain('email@qa.com');
     browser.focusMainWindow();
   };
 
@@ -36,12 +36,12 @@ describe('Auth Email -', function () {
 
   before(function () {
     browser.get('http://' + testURL);
+    waitFor('#email-logs', 30000);
     // cache browser test account
     browserTestAccount = find('#browser-email').text();
-    waitFor('#email-logs');
     // clear email logs before we start the test
     find('#clear-email-logs').click();
-    waitFor('#server-action-ok');
+    waitFor('#server-action-ok', 30000);
     expect(count('.email-log')).to.equal(0);
   });
 
@@ -49,7 +49,7 @@ describe('Auth Email -', function () {
 
     it('should send correct email', function () {
       find('#create-test-account').click();
-      waitFor('#server-action-ok');
+      
       find('#login-sign-in-link').click();
       find('#forgot-password-link').click();
       find('#forgot-password-email').type(browserTestAccount);
@@ -72,8 +72,8 @@ describe('Auth Email -', function () {
     });
 
     it('should send correct email', function () {
-      find('#test-send-enrollment-email').click();
-      waitFor('.email-log');
+      find('#test-send-enrollment-email', 30000).click();
+      waitFor('#server-action-ok', 30000);
       assertEmail({
         from: 'Meteor Accounts <no-reply@meteor.com>',
         to: browserTestAccount,
@@ -86,7 +86,7 @@ describe('Auth Email -', function () {
     it('should not be logged in when following the email link', function () {
       openNewWindowAndLogin();
       goToLinkInEmail();
-      expect(find('#login-sign-in-link').text()).to.contain('Sign in ▾');
+      expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
       find('#enroll-account-password').type('123456');
       find('#login-buttons-enroll-account-button').click();
       // TODO
