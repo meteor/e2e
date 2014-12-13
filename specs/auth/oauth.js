@@ -1,4 +1,16 @@
-var providers = require('./oauth_providers');
+var providersToRun = function () {
+  var _ = require('underscore');
+  var allProviders = require('./oauth_providers');
+
+  if (process.env.TEST_OAUTH_PROVIDERS) {
+    var providerList = process.env.TEST_OAUTH_PROVIDERS.split(',');
+    return _.filter(allProviders, function (provider) {
+      return _.contains(providerList, provider.name);
+    });
+  } else {
+    return allProviders;
+  }
+};
 
 describe('A small app with accounts', function () {
 
@@ -8,21 +20,6 @@ describe('A small app with accounts', function () {
   var closeDropdown = function () {
     find("a.login-close-text").click();
   };
-
-  it('shows a "Sign in" dropdown', function () {
-    browser.get('http://rainforest-auth-qa.meteor.com');
-    expect(find("#login-sign-in-link").text()).to.contain("Sign in ▾");
-  });
-
-  it('has password login', function () {
-    openDropdown();
-
-    browser.waitFor('#login-email');
-    browser.waitFor('#login-password');
-    expect(find("#login-buttons-password").text()).to.contain("Sign in");
-
-    closeDropdown();
-  });
 
   var startSignIn = function (providerName) {
     find('#login-buttons-' + providerName).click();
@@ -37,7 +34,11 @@ describe('A small app with accounts', function () {
     expect(find("#login-sign-in-link").text()).to.contain("Sign in ▾");
   };
 
-  providers.forEach(function (provider) {
+  before(function () {
+    browser.get('http://rainforest-auth-qa.meteor.com');
+  });
+
+  providersToRun().forEach(function (provider) {
     describe("- " + provider.name + ' login', function () {
       before(function () {
         browser.refresh();
