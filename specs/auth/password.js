@@ -7,7 +7,7 @@ describe('Password based login', function () {
 
   it('should display correct UI elements', function () {
     browser.get('http://rainforest-auth-qa.meteor.com');
-    find('#login-sign-in-link').click();
+    find('#login-sign-in-link', 30000).click();
     browser.waitFor([
       '#login-email-label',
       '#login-email',
@@ -28,7 +28,7 @@ describe('Password based login', function () {
     find('#login-email').type('foo@bar.com');
     find('#login-password').type('12345');
     find('#login-buttons-password').click();
-    expect(find('.message.error-message').text()).to.contain('User not found');
+    expect(find('.message.error-message', 30000).text()).to.contain('User not found');
   });
 
   it('should require at least 6 characters for password', function () {
@@ -43,13 +43,13 @@ describe('Password based login', function () {
   it('should sign in after successfully creating a new account', function () {
     find('#login-password').clear().type('123456');
     find('#login-buttons-password').click();
-    expect(find('#login-name-link').text()).to.contain(browserTestAccount);
+    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should be able to sign out', function () {
     find('#login-name-link').click();
     find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link').text()).to.contain('Sign in ▾');
+    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
   });
 
   it('should show correct error message for incorrect password', function () {
@@ -57,13 +57,13 @@ describe('Password based login', function () {
     find('#login-email').type(browserTestAccount);
     find('#login-password').type('654321');
     find('#login-buttons-password').click();
-    expect(find('.message.error-message').text()).to.contain('Incorrect password');
+    expect(find('.message.error-message', 30000).text()).to.contain('Incorrect password');
   });
 
   it('should be able to sign in after signing out', function () {
     find('#login-password').clear().type('123456');
     find('#login-buttons-password').click();
-    expect(find('#login-name-link').text()).to.contain(browserTestAccount);
+    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should be able to change password', function () {
@@ -72,7 +72,7 @@ describe('Password based login', function () {
     find('#login-old-password').type('123456');
     find('#login-password').type('654321');
     find('#login-buttons-do-change-password').click();
-    expect(find('.message.info-message').text()).to.contain('Password changed');
+    expect(find('.message.info-message', 30000).text()).to.contain('Password changed');
   });
 
   it('should be able to sign with changed password', function () {
@@ -80,34 +80,34 @@ describe('Password based login', function () {
     find('.login-close-text').click();
     find('#login-name-link').click();
     find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link').text()).to.contain('Sign in ▾');
+    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
     // sign in again
     find('#login-sign-in-link').click();
     find('#login-email').type(browserTestAccount);
     find('#login-password').type('654321');
     find('#login-buttons-password').click();
-    expect(find('#login-name-link').text()).to.contain(browserTestAccount);
+    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should show correct error message when creating an account that already exists', function () {
     //sign out
     find('#login-name-link').click();
     find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link').text()).to.contain('Sign in ▾');
+    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
     // try to create existing account
     find('#login-sign-in-link').click();
     find('#signup-link').click();
     find('#login-email').type(browserTestAccount);
     find('#login-password').type('123456');
     find('#login-buttons-password').click();
-    expect(find('.message.error-message').text())
+    expect(find('.message.error-message', 30000).text())
       .to.contain('Email already exists');
   });
 
   it('should show correct custom error message thrown in validateNewUser()', function () {
     find('#login-email').clear().type('invalid@qa.com');
     find('#login-buttons-password').click();
-    expect(find('.message.error-message').text())
+    expect(find('.message.error-message', 30000).text())
       .to.contain('Invalid email address');
   });
 

@@ -12,7 +12,7 @@ module.exports = [
     name: 'github',
     userDisplayName: 'Meteor AuthQA',
     waitForPopupContents: function () {
-      expect(find('#login').text()).to.contain("Sign in");
+      expect(find('#login', 30000).text()).to.contain("Sign in");
     },
     signInInPopup: function () {
       find('#login_field').type(email);
@@ -24,7 +24,7 @@ module.exports = [
     name: 'google',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
-      expect(find('h2').text()).to.contain("Sign in with your Google Account");
+      expect(find('h2', 30000).text()).to.contain("Sign in with your Google Account");
     },
     signInInPopup: function () {
       find('#Email').type(email);
@@ -36,7 +36,7 @@ module.exports = [
     name: 'facebook',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
-      expect(find('#login_form').text()).to.contain("Meteor Auth QA");
+      expect(find('#login_form', 30000).text()).to.contain("Meteor Auth QA");
     },
     signInInPopup: function () {
       find('#email').type(email);
@@ -48,7 +48,7 @@ module.exports = [
     name: 'twitter',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
-      expect(find('div.auth').text()).to.contain("Authorize Meteor Auth QA");
+      expect(find('div.auth', 30000).text()).to.contain("Authorize Meteor Auth QA");
     },
     signInInPopup: function () {
       find('#username_or_email').type(email);
@@ -60,7 +60,7 @@ module.exports = [
     name: 'weibo',
     userDisplayName: 'AuthMeteor',
     waitForPopupContents: function () {
-      expect(find('p.oauth_main_info').text()).to.contain("meteor_auth_qa");
+      expect(find('p.oauth_main_info', 30000).text()).to.contain("meteor_auth_qa");
     },
     signInInPopup: function () {
       find('#userId').type(email);
@@ -72,7 +72,7 @@ module.exports = [
     name: 'meteor-developer',
     userDisplayName: 'meteorauthqa',
     waitForPopupContents: function () {
-      expect(find('div.header').text()).to.contain("Meteor Auth QA");
+      expect(find('div.header', 30000).text()).to.contain("Meteor Auth QA");
     },
     signInInPopup: function () {
       find('input[name=usernameOrEmail]').type(email);
@@ -87,7 +87,7 @@ module.exports = [
     name: 'meetup',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
-      expect(find('#paneLogin').text()).to.contain("Meteor Auth QA");
+      expect(find('#paneLogin', 30000).text()).to.contain("Meteor Auth QA");
     },
     signInInPopup: function () {
       find('#email').type(email);

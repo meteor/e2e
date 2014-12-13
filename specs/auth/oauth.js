@@ -26,12 +26,12 @@ describe('A small app with accounts', function () {
   };
 
   var expectSignedIn = function (userDisplayName) {
-    expect(find('#login-name-link').text()).to.contain(userDisplayName);
+    expect(find('#login-name-link', 30000).text()).to.contain(userDisplayName);
   };
 
   var signOut = function () {
     find('#login-buttons-logout').click();
-    expect(find("#login-sign-in-link").text()).to.contain("Sign in ▾");
+    expect(find("#login-sign-in-link", 30000).text()).to.contain("Sign in ▾");
   };
 
   before(function () {
@@ -45,6 +45,8 @@ describe('A small app with accounts', function () {
       });
 
       it('signs in', function () {
+
+        browser.waitFor('#login-sign-in-link', 30000);
 
         openDropdown();
         expect(find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
