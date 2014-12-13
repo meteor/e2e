@@ -8,7 +8,7 @@ exports.remote = function () {
   return {
     host: 'ondemand.saucelabs.com',
     port: 80,
-    username:  'honeycomb',
+    username: 'honeycomb',
     accessKey: process.env.SAUCE_LABS_ACCESS_KEY
   };
 };
