@@ -1,15 +1,6 @@
 <template name="emailLogs">
   <div id="email-logs-container">
-    <h2>Email Flow Logs</h2>
-    <div>
-      <a id="clear-email-logs">Clear email logs</a><br>
-      <a id="delete-test-account">Delete test account</a><br>
-      <a id="create-test-account">Create test account</a><br>
-      <a id="test-send-enrollment-email">Test Accounts.sendEnrollmentEmail</a><br>
-      {{#if actionSuccess}}
-        <span id="server-action-ok">OK</span>
-      {{/if}}
-    </div>
+    <h2>Email Logs</h2>
     <ul id="email-logs">
       {{#each logs}}
         <li class="email-log">

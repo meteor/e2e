@@ -1,8 +1,8 @@
 describe('Auth Email -', function () {
 
   var browserTestAccount;
-  // var testURL = 'localhost:3000';
-  var testURL = 'rainforest-auth-qa.meteor.com';
+  var testURL = 'localhost:3000';
+  // var testURL = 'rainforest-auth-qa.meteor.com';
   var emailLinkRegex = new RegExp('http:\\/\\/' + testURL + '\\/#\\/[a-zA-z-_\\d\\/]+');
 
   // assert content on the first email in the list
@@ -25,26 +25,53 @@ describe('Auth Email -', function () {
     browser.focusMainWindow();
   };
 
-  var getLinkFromEmail = function () {
+  // go to the linked found in the top-most email
+  var goToLinkInEmail = function () {
     var text = find('.email-log:first-child .email-text').text();
     var match = text.match(emailLinkRegex);
     expect(match).to.exist;
-    return match[0];
+    browser.get(match[0]);
+    browser.refresh(); // force reload because it's a hash link
   };
 
   before(function () {
     browser.get('http://' + testURL);
-    waitFor('#email-logs');
+    // cache browser test account
     browserTestAccount = find('#browser-email').text();
+    waitFor('#email-logs');
     // clear email logs before we start the test
     find('#clear-email-logs').click();
     waitFor('#server-action-ok');
+    expect(count('.email-log')).to.equal(0);
+  });
+
+  describe('Forgot Password', function () {
+
+    it('should send correct email', function () {
+      find('#create-test-account').click();
+      waitFor('#server-action-ok');
+      find('#login-sign-in-link').click();
+      find('#forgot-password-link').click();
+      find('#forgot-password-email').type(browserTestAccount);
+      find('#login-buttons-forgot-password').click();
+      assertEmail({
+        from: 'Meteor Accounts <no-reply@meteor.com>',
+        to: browserTestAccount,
+        subject: 'How to reset your password on ' + testURL,
+        text: 'Hello, To reset your password, simply click the link below. ' +
+          'http://' + testURL + '/#/reset-password/'
+      });
+    });
+
   });
 
   describe('Accounts.sendEnrollmentEmail', function () {
 
+    before(function () {
+      browser.refresh();
+    });
+
     it('should send correct email', function () {
-      expect(count('.email-log')).to.equal(0);
       find('#test-send-enrollment-email').click();
       waitFor('.email-log');
       assertEmail({
@@ -58,13 +85,11 @@ describe('Auth Email -', function () {
 
     it('should not be logged in when following the email link', function () {
       openNewWindowAndLogin();
-      var link = getLinkFromEmail();
-      browser.get(link);
-      browser.refresh(); // force reload because it's a hash link
+      goToLinkInEmail();
       expect(find('#login-sign-in-link').text()).to.contain('Sign in ▾');
       find('#enroll-account-password').type('123456');
       find('#login-buttons-enroll-account-button').click();
-      // currently shows "Token expired"
+      // TODO
     });
 
     // it('should be able to log in after resetting password', function () {

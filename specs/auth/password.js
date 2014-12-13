@@ -5,8 +5,18 @@ describe('Password based login', function () {
   // reused in multiple specs.
   var browserTestAccount;
 
-  it('should display correct UI elements', function () {
+  before(function () {
     browser.get('http://rainforest-auth-qa.meteor.com');
+    waitFor('#login-sign-in-link', 30000);
+    // cache browser test account
+    browserTestAccount = find('#browser-email').text();
+    // delete the browser-specific test account, if it exists
+    find('#delete-test-account').click();
+    waitFor('#server-action-ok', 30000);
+  });
+
+  it('should display correct UI elements', function () {
+    
     find('#login-sign-in-link', 30000).click();
     browser.waitFor([
       '#login-email-label',
@@ -33,7 +43,6 @@ describe('Password based login', function () {
 
   it('should require at least 6 characters for password', function () {
     find('#signup-link').click();
-    browserTestAccount = find('#browser-email').text();
     find('#login-email').clear().type(browserTestAccount);
     find('#login-buttons-password').click();
     expect(find('.message.error-message').text())

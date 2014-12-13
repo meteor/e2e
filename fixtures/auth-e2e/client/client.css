@@ -16,7 +16,11 @@ body {
   background-color: #eee;
 }
 
-#email-logs-container a {
+#actions {
+  margin-bottom: 20px;
+}
+
+#actions a {
   cursor: pointer;
   text-decoration: underline;
 }

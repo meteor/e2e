@@ -17,10 +17,6 @@ var browser = sniffBrowserId();
 // filter email flow logs.
 Session.set('browser', browser);
 
-// Remove the associated test account before tests, so we can repeat
-// the tests on a reload without having to re-deploy everytime.
-Meteor.call('removeTestAccount', browser);
-
 // Generate a browserId so that testers using different browsers
 // create different user accounts (avoid clashing)
 Template.body.helpers({
