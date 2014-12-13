@@ -1,14 +1,16 @@
-if (!process.env.SAUCE_LABS_ACCESS_KEY) {
-  console.error("Need to set SAUCE_LABS_ACCESS_KEY environment variable");
-  process.exit(1);
-}
-
 // SauceLabs config
-exports.remote = {
-  host: 'ondemand.saucelabs.com',
-  port: 80,
-  username: 'honeycomb',
-  accessKey: process.env.SAUCE_LABS_ACCESS_KEY
+exports.remote = function () {
+  if (!process.env.SAUCE_LABS_ACCESS_KEY) {
+    console.error("Need to set SAUCE_LABS_ACCESS_KEY environment variable");
+    process.exit(1);
+  }
+
+  return {
+    host: 'ondemand.saucelabs.com',
+    port: 80,
+    username:  'honeycomb',
+    accessKey: process.env.SAUCE_LABS_ACCESS_KEY
+  };
 };
 
 // WebDriver Browser Descriptors
