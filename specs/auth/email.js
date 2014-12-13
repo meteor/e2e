@@ -1,6 +1,6 @@
 var browserTestAccount;
-var testURL = 'localhost:3000';
-// var testURL = 'rainforest-auth-qa.meteor.com';
+// var testURL = 'localhost:3000';
+var testURL = 'rainforest-auth-qa.meteor.com';
 var emailLinkRegex = new RegExp('http:\\/\\/' + testURL + '\\/#\\/[a-zA-z-_\\d\\/]+');
 
 // assert content on the first email in the list
