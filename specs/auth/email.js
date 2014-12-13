@@ -81,11 +81,12 @@ describe('Auth Email -', function () {
         .to.contain('Password reset. You are now logged in as ' + browserTestAccount);
     });
 
-    // it('should transfer the login to another tab', function () {
-    //   browser.focusSecondWindow();
-    //   expect(browser.find('#login-name-link').text())
-    //     .to.contain(browserTestAccount);
-    // });
+    it('should transfer the login to another tab', function () {
+      browser.focusSecondWindow();
+      browser.wait('#login-name-link', 30000, function (el) {
+        return el.text().indexOf(browserTestAccount) > -1;
+      });
+    });
 
     after(function () {
       // cloase second tab
@@ -132,11 +133,12 @@ describe('Auth Email -', function () {
         .to.contain(browserTestAccount);
     });
 
-    // it('should transfer the login to another tab', function () {
-    //   browser.focusSecondWindow();
-    //   expect(browser.find('#login-name-link', 30000).text())
-    //     .to.contain(browserTestAccount);
-    // });
+    it('should transfer the login to another tab', function () {
+      browser.focusSecondWindow();
+      browser.wait('#login-name-link', 30000, function (el) {
+        return el.text().indexOf(browserTestAccount) > -1;
+      });
+    });
 
     after(function () {
       // cloase second tab
