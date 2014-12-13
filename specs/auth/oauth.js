@@ -15,23 +15,23 @@ var providersToRun = function () {
 describe('A small app with accounts', function () {
 
   var openDropdown = function () {
-    find("#login-sign-in-link, #login-name-link").click();
+    browser.find("#login-sign-in-link, #login-name-link").click();
   };
   var closeDropdown = function () {
-    find("a.login-close-text").click();
+    browser.find("a.login-close-text").click();
   };
 
   var startSignIn = function (providerName) {
-    find('#login-buttons-' + providerName).click();
+    browser.find('#login-buttons-' + providerName).click();
   };
 
   var expectSignedIn = function (userDisplayName) {
-    expect(find('#login-name-link', 30000).text()).to.contain(userDisplayName);
+    expect(browser.find('#login-name-link', 30000).text()).to.contain(userDisplayName);
   };
 
   var signOut = function () {
-    find('#login-buttons-logout').click();
-    expect(find("#login-sign-in-link", 30000).text()).to.contain("Sign in ▾");
+    browser.find('#login-buttons-logout').click();
+    expect(browser.find("#login-sign-in-link", 30000).text()).to.contain("Sign in ▾");
   };
 
   before(function () {
@@ -46,10 +46,10 @@ describe('A small app with accounts', function () {
 
       it('signs in', function () {
 
-        browser.waitFor('#login-sign-in-link', 30000);
+        browser.wait('#login-sign-in-link', 30000);
 
         openDropdown();
-        expect(find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
+        expect(browser.find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
         startSignIn(provider.name);
 
         // Should show a popup. Test that when we close the pop-up we

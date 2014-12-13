@@ -7,18 +7,18 @@ describe('Password based login', function () {
 
   before(function () {
     browser.get('http://rainforest-auth-qa.meteor.com');
-    waitFor('#login-sign-in-link', 30000);
+    browser.wait('#login-sign-in-link', 30000);
     // cache browser test account
-    browserTestAccount = find('#browser-email').text();
+    browserTestAccount = browser.find('#browser-email').text();
     // delete the browser-specific test account, if it exists
-    find('#delete-test-account').click();
-    waitFor('#server-action-ok', 30000);
+    browser.find('#remove-test-account').click();
+    browser.wait('#server-action-ok', 30000);
   });
 
   it('should display correct UI elements', function () {
     
-    find('#login-sign-in-link', 30000).click();
-    browser.waitFor([
+    browser.find('#login-sign-in-link', 30000).click();
+    browser.wait([
       '#login-email-label',
       '#login-email',
       '#login-password-label',
@@ -30,93 +30,93 @@ describe('Password based login', function () {
   });
 
   it('should show correct error message for invalid email', function () {
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message').text()).to.contain('Invalid email');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message').text()).to.contain('Invalid email');
   });
 
   it('should show correct error message when user is not found', function () {
-    find('#login-email').type('foo@bar.com');
-    find('#login-password').type('12345');
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message', 30000).text()).to.contain('User not found');
+    browser.find('#login-email').type('foo@bar.com');
+    browser.find('#login-password').type('12345');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message', 30000).text()).to.contain('User not found');
   });
 
   it('should require at least 6 characters for password', function () {
-    find('#signup-link').click();
-    find('#login-email').clear().type(browserTestAccount);
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message').text())
+    browser.find('#signup-link').click();
+    browser.find('#login-email').clear().type(browserTestAccount);
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message').text())
       .to.contain('Password must be at least 6 characters long');
   });
 
   it('should sign in after successfully creating a new account', function () {
-    find('#login-password').clear().type('123456');
-    find('#login-buttons-password').click();
-    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
+    browser.find('#login-password').clear().type('123456');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should be able to sign out', function () {
-    find('#login-name-link').click();
-    find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
+    browser.find('#login-name-link').click();
+    browser.find('#login-buttons-logout').click();
+    expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
   });
 
   it('should show correct error message for incorrect password', function () {
-    find('#login-sign-in-link').click();
-    find('#login-email').type(browserTestAccount);
-    find('#login-password').type('654321');
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message', 30000).text()).to.contain('Incorrect password');
+    browser.find('#login-sign-in-link').click();
+    browser.find('#login-email').type(browserTestAccount);
+    browser.find('#login-password').type('654321');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message', 30000).text()).to.contain('Incorrect password');
   });
 
   it('should be able to sign in after signing out', function () {
-    find('#login-password').clear().type('123456');
-    find('#login-buttons-password').click();
-    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
+    browser.find('#login-password').clear().type('123456');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should be able to change password', function () {
-    find('#login-name-link').click();
-    find('#login-buttons-open-change-password').click();
-    find('#login-old-password').type('123456');
-    find('#login-password').type('654321');
-    find('#login-buttons-do-change-password').click();
-    expect(find('.message.info-message', 30000).text()).to.contain('Password changed');
+    browser.find('#login-name-link').click();
+    browser.find('#login-buttons-open-change-password').click();
+    browser.find('#login-old-password').type('123456');
+    browser.find('#login-password').type('654321');
+    browser.find('#login-buttons-do-change-password').click();
+    expect(browser.find('.message.info-message', 30000).text()).to.contain('Password changed');
   });
 
   it('should be able to sign with changed password', function () {
     //sign out
-    find('.login-close-text').click();
-    find('#login-name-link').click();
-    find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
+    browser.find('.login-close-text').click();
+    browser.find('#login-name-link').click();
+    browser.find('#login-buttons-logout').click();
+    expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
     // sign in again
-    find('#login-sign-in-link').click();
-    find('#login-email').type(browserTestAccount);
-    find('#login-password').type('654321');
-    find('#login-buttons-password').click();
-    expect(find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
+    browser.find('#login-sign-in-link').click();
+    browser.find('#login-email').type(browserTestAccount);
+    browser.find('#login-password').type('654321');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('#login-name-link', 30000).text()).to.contain(browserTestAccount);
   });
 
   it('should show correct error message when creating an account that already exists', function () {
     //sign out
-    find('#login-name-link').click();
-    find('#login-buttons-logout').click();
-    expect(find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
+    browser.find('#login-name-link').click();
+    browser.find('#login-buttons-logout').click();
+    expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
     // try to create existing account
-    find('#login-sign-in-link').click();
-    find('#signup-link').click();
-    find('#login-email').type(browserTestAccount);
-    find('#login-password').type('123456');
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message', 30000).text())
+    browser.find('#login-sign-in-link').click();
+    browser.find('#signup-link').click();
+    browser.find('#login-email').type(browserTestAccount);
+    browser.find('#login-password').type('123456');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message', 30000).text())
       .to.contain('Email already exists');
   });
 
   it('should show correct custom error message thrown in validateNewUser()', function () {
-    find('#login-email').clear().type('invalid@qa.com');
-    find('#login-buttons-password').click();
-    expect(find('.message.error-message', 30000).text())
+    browser.find('#login-email').clear().type('invalid@qa.com');
+    browser.find('#login-buttons-password').click();
+    expect(browser.find('.message.error-message', 30000).text())
       .to.contain('Invalid email address');
   });
 
