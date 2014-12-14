@@ -20,7 +20,6 @@ var openNewWindowAndLogin = function () {
   browser.find('#login-password').type('123456');
   browser.find('#login-buttons-password').click();
   expect(browser.find('#login-name-link', 30000).text()).to.contain('email@qa.com');
-  browser.focusMainWindow();
 };
 
 // go to the linked found in the top-most email
@@ -30,6 +29,22 @@ var goToLinkInEmail = function () {
   expect(match).to.exist;
   browser.get(match[0]);
   browser.refresh(); // force reload because it's a hash link
+};
+
+var signOut = function () {
+  browser.find('#login-name-link', 30000).click();
+  browser.find('#login-buttons-logout').click();
+};
+
+var assertSignedOut = function () {
+  expect(browser.find('#login-sign-in-link', 30000).text())
+    .to.contain('Sign in ▾');
+};
+
+var closeSecondWindow = function () {
+  browser.focusSecondWindow();
+  browser.close();
+  browser.focusMainWindow();
 };
 
 describe('Auth Email -', function () {
@@ -67,8 +82,9 @@ describe('Auth Email -', function () {
 
     it('should not be logged in when following the email link', function () {
       openNewWindowAndLogin();
+      browser.focusMainWindow();
       goToLinkInEmail();
-      expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
+      assertSignedOut();
     });
 
     it('should log in after resetting the password', function () {
@@ -88,11 +104,39 @@ describe('Auth Email -', function () {
       });
     });
 
-    after(function () {
-      // cloase second tab
-      browser.focusSecondWindow();
-      browser.close();
+    it('sign out should affect both tabs', function () {
+      signOut();
+      assertSignedOut();
       browser.focusMainWindow();
+      assertSignedOut();
+    });
+
+    it('should not be able to login with old password', function () {
+      browser.find('#login-sign-in-link').click();
+      browser.find('#login-email').type(browserTestAccount);
+      browser.find('#login-password').type('123456');
+      browser.find('#login-buttons-password').click();
+      expect(browser.find('.message.error-message', 30000).text())
+        .to.contain('Incorrect password');
+    });
+
+    it('should be able to login with changed password', function () {
+      browser.find('#login-password').clear().type('654321');
+      browser.find('#login-buttons-password').click();
+      expect(browser.find('#login-name-link', 30000).text())
+        .to.contain(browserTestAccount);
+    });
+
+    it('should not be able to use the same reset link again', function () {
+      goToLinkInEmail();
+      browser.find('#reset-password-new-password', 30000).type('123456');
+      browser.find('#login-buttons-reset-password-button').click();
+      expect(browser.find('.accounts-dialog .error-message', 30000).text())
+        .to.contain('Token expired');
+    });
+
+    after(function () {
+      closeSecondWindow();
     });
 
   });
@@ -101,10 +145,6 @@ describe('Auth Email -', function () {
 
     before(function () {
       browser.refresh();
-      // log out first
-      browser.find('#login-name-link', 30000).click();
-      browser.find('#login-buttons-logout').click();
-      expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
     });
 
     it('should send correct email', function () {
@@ -122,10 +162,10 @@ describe('Auth Email -', function () {
     it('should not be logged in when following the email link', function () {
       openNewWindowAndLogin();
       goToLinkInEmail();
-      expect(browser.find('#login-sign-in-link', 30000).text()).to.contain('Sign in ▾');
+      assertSignedOut();
     });
 
-    it('should be able to log in after resetting password', function () {
+    it('should be able to log in after setting password', function () {
       browser.find('#enroll-account-password').type('123456');
       browser.find('#login-buttons-enroll-account-button').click();
       // expect logged in
@@ -140,11 +180,24 @@ describe('Auth Email -', function () {
       });
     });
 
-    after(function () {
-      // cloase second tab
-      browser.focusSecondWindow();
-      browser.close();
+    it('sign out should affect both tabs', function () {
+      signOut();
+      assertSignedOut();
       browser.focusMainWindow();
+      assertSignedOut();
+    });
+
+    it('should be able to login with new password', function () {
+      browser.find('#login-sign-in-link').click();
+      browser.find('#login-email').type(browserTestAccount);
+      browser.find('#login-password').type('123456');
+      browser.find('#login-buttons-password').click();
+      expect(browser.find('#login-name-link', 30000).text())
+        .to.contain(browserTestAccount);
+    });
+
+    after(function () {
+      closeSecondWindow();
     });
 
   });
