@@ -57,15 +57,21 @@ PACKAGES=(
   accounts-meteor-developer
   accounts-password
   service-configuration
+  email
 )
 "$METEOR" add ${PACKAGES[@]}
-cp "$TEMPLATE_DIR/auth-e2e.html" ./auth-e2e.html
-cp "$TEMPLATE_DIR/auth-e2e.js" ./auth-e2e.js
+
+# delete default files
+rm auth-e2e.js auth-e2e.html auth-e2e.css
+# copy over actual app files
+cp -R "$TEMPLATE_DIR/both" ./both
+cp -R "$TEMPLATE_DIR/client" ./client
+cp -R "$TEMPLATE_DIR/server" ./server
 
 # The Auth QA app is deployed at auth-e2e.meteor.com
 SITE=rainforest-auth-qa
 echo
-echo -n "* Deploying the test app to $SITE..."
+echo -n "* Deleting already deployed test app..."
 # `|| true` so that the script doesn't fail if the the app doesn't exist
 "$METEOR" deploy -D $SITE >> $LOG 2>&1 || true
 
@@ -74,6 +80,7 @@ if [ -z "$OAUTH_PROVIDER_SECRETS" ]; then
     exit 1
 fi
 
+echo -n "* Deploying the test app to $SITE..."
 echo $OAUTH_PROVIDER_SECRETS > secrets.json
 "$METEOR" deploy --settings secrets.json $SITE >> $LOG 2>&1
 rm secrets.json
