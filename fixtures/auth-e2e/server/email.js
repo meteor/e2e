@@ -21,4 +21,9 @@ Meteor.startup(function () {
     });
   } catch (e) {}
 
+  // send verification email
+  Accounts.config({
+    sendVerificationEmail: true
+  });
+
 });

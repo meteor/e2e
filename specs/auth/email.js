@@ -21,7 +21,8 @@ var openNewWindowAndLogin = function () {
   browser.find('#login-email').type('email@qa.com');
   browser.find('#login-password').type('123456');
   browser.find('#login-buttons-password').click();
-  expect(browser.find('#login-name-link', 30000).text()).to.contain('email@qa.com');
+  expect(browser.find('#login-name-link', 30000).text())
+    .to.contain('email@qa.com');
 };
 
 // go to the linked found in the top-most email
@@ -31,6 +32,11 @@ var goToLinkInEmail = function () {
   expect(match).to.exist;
   browser.get(match[0]);
   browser.refresh(); // force reload because it's a hash link
+};
+
+var assertSignedIn = function () {
+  expect(browser.find('#login-name-link', 30000).text())
+    .to.contain(browserTestAccount);
 };
 
 var signOut = function () {
@@ -93,8 +99,7 @@ describe('Auth Email -', function () {
       browser.find('#reset-password-new-password').type('654321');
       browser.find('#login-buttons-reset-password-button').click();
       // expect logged in
-      expect(browser.find('#login-name-link', 30000).text())
-        .to.contain(browserTestAccount);
+      assertSignedIn();
       expect(browser.find('.accounts-dialog').text())
         .to.contain('Password reset. You are now logged in as ' + browserTestAccount);
       browser.find('#just-verified-dismiss-button').click();
@@ -126,8 +131,7 @@ describe('Auth Email -', function () {
     it('should be able to login with changed password', function () {
       browser.find('#login-password').clear().type('654321');
       browser.find('#login-buttons-password').click();
-      expect(browser.find('#login-name-link', 30000).text())
-        .to.contain(browserTestAccount);
+      assertSignedIn();
     });
 
     it('should not be able to use the same reset link again', function () {
@@ -136,6 +140,64 @@ describe('Auth Email -', function () {
       browser.find('#login-buttons-reset-password-button').click();
       expect(browser.find('.accounts-dialog .error-message', 30000).text())
         .to.contain('Token expired');
+    });
+
+    after(function () {
+      closeSecondWindow();
+    });
+
+  });
+
+  describe('Verification Email', function () {
+
+    before(function () {
+      browser.refresh();
+      browser.find('#remove-test-account').click();
+      browser.wait('#server-action-ok', 30000);
+      assertSignedOut(); // delete account should sign out
+    });
+
+    it('should send correct email when creating account', function () {
+      browser.find('#login-sign-in-link').click();
+      browser.find('#signup-link').click();
+      browser.find('#login-email').type(browserTestAccount);
+      browser.find('#login-password').type('123456');
+      browser.find('#login-buttons-password').click();
+      assertSignedIn();
+      assertEmail({
+        from: 'Meteor Accounts <no-reply@meteor.com>',
+        to: browserTestAccount,
+        subject: 'How to verify email address on ' + testURL,
+        text: 'Hello, To verify your account email, simply click the link below. ' +
+          'http://' + testURL + '/#/verify-email/'
+      });
+      signOut();
+      assertSignedOut();
+    });
+
+    it('should be logged in when following the email link', function () {
+      openNewWindowAndLogin();
+      browser.focusMainWindow();
+      goToLinkInEmail();
+      // expect signed in
+      assertSignedIn();
+      expect(browser.find('.accounts-dialog', 30000).text())
+        .to.contain('Email verified. You are now logged in as ' + browserTestAccount);
+      browser.find('#just-verified-dismiss-button').click();
+    });
+
+    it('should transfer the login to another tab', function () {
+      browser.focusSecondWindow();
+      browser.wait('#login-name-link', 30000, function (el) {
+        return el.text().indexOf(browserTestAccount) > -1;
+      });
+    });
+
+    it('sign out should affect both tabs', function () {
+      signOut();
+      assertSignedOut();
+      browser.focusMainWindow();
+      assertSignedOut();
     });
 
     after(function () {
@@ -164,6 +226,7 @@ describe('Auth Email -', function () {
 
     it('should not be logged in when following the email link', function () {
       openNewWindowAndLogin();
+      browser.focusMainWindow();
       goToLinkInEmail();
       assertSignedOut();
     });
@@ -172,8 +235,7 @@ describe('Auth Email -', function () {
       browser.find('#enroll-account-password').type('123456');
       browser.find('#login-buttons-enroll-account-button').click();
       // expect logged in
-      expect(browser.find('#login-name-link', 30000).text())
-        .to.contain(browserTestAccount);
+      assertSignedIn();
     });
 
     it('should transfer the login to another tab', function () {
@@ -195,8 +257,7 @@ describe('Auth Email -', function () {
       browser.find('#login-email').type(browserTestAccount);
       browser.find('#login-password').type('123456');
       browser.find('#login-buttons-password').click();
-      expect(browser.find('#login-name-link', 30000).text())
-        .to.contain(browserTestAccount);
+      assertSignedIn();
     });
 
     after(function () {
