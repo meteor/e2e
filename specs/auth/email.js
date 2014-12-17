@@ -15,6 +15,8 @@ var assertEmail = function (options) {
 var openNewWindowAndLogin = function () {
   browser.newWindow('http://' + testURL);
   browser.focusSecondWindow();
+  // IE opens a tiny new window which makes screenshots too small
+  browser.setWindowSize(800, 600);
   browser.find('#login-sign-in-link', 30000).click();
   browser.find('#login-email').type('email@qa.com');
   browser.find('#login-password').type('123456');
@@ -95,6 +97,7 @@ describe('Auth Email -', function () {
         .to.contain(browserTestAccount);
       expect(browser.find('.accounts-dialog').text())
         .to.contain('Password reset. You are now logged in as ' + browserTestAccount);
+      browser.find('#just-verified-dismiss-button').click();
     });
 
     it('should transfer the login to another tab', function () {
