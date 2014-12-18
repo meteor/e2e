@@ -36,7 +36,9 @@ trap cleanup EXIT
 
 # Now, login as rainforestqa. This way, anyone can access apps
 # deployed by this script.
+echo
 echo -n "* Logging in with the test account..."
+echo
 "$METEOR" help > /dev/null  # Download dev bundle
 (echo rainforestqa; sleep 2s; echo rainforestqa;) | "$METEOR" login
 
@@ -72,6 +74,7 @@ cp -R "$TEMPLATE_DIR/server" ./server
 SITE=rainforest-auth-qa
 echo
 echo -n "* Deleting already deployed test app..."
+echo
 # `|| true` so that the script doesn't fail if the the app doesn't exist
 "$METEOR" deploy -D $SITE >> $LOG 2>&1 || true
 
@@ -79,8 +82,9 @@ if [ -z "$OAUTH_PROVIDER_SECRETS" ]; then
     echo "Need to set \$OAUTH_PROVIDER_SECRETS"
     exit 1
 fi
-
+echo
 echo -n "* Deploying the test app to $SITE..."
+echo
 echo $OAUTH_PROVIDER_SECRETS > secrets.json
 "$METEOR" deploy --settings secrets.json $SITE >> $LOG 2>&1
 rm secrets.json
