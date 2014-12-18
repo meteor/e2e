@@ -1,10 +1,21 @@
+var excludedPairs = [
+  ['safari', 'github'],
+  ['safari', 'meteor-developer'],
+  ['ie8', 'meteor-developer'],
+  ['ie9', 'meteor-developer']
+];
+
 var providersToRun = function () {
   var _ = require('underscore');
-  var allProviders = require('./oauth_providers');
+  var allProviders = require('./oauth_providers').filter(function (provider) {
+    return ! excludedPairs.some(function (pair) {
+      return pair[0] === browser.name && pair[1] === provider.name;
+    });
+  });
 
   if (process.env.TEST_OAUTH_PROVIDERS) {
     var providerList = process.env.TEST_OAUTH_PROVIDERS.split(',');
-    return _.filter(allProviders, function (provider) {
+    return allProviders.filter(function (provider) {
       return _.contains(providerList, provider.name);
     });
   } else {
@@ -41,6 +52,7 @@ describe('A small app with accounts', function () {
   providersToRun().forEach(function (provider) {
     describe("- " + provider.name + ' login', function () {
       before(function () {
+        browser.focusMainWindow();
         browser.refresh();
       });
 
