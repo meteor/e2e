@@ -3,3 +3,4 @@ node_modules
 \#*#
 secrets.json
 screenshots/*.png
+run.sh
