@@ -54,26 +54,37 @@ module.exports = [
       browser.find('#username_or_email').type(email);
       browser.find('#password').type(password);
       browser.find('#allow').click();
-
       // Mysteriously, on some browsers, Twitter requires also
       // clicking on "Authorize App" on every sign in.
-      try {
-        browser.find('#allow', 30000).click();
-      } catch (e) {
-        // Twitter decided not to require this step this time.  Why?
+      //
+      // Hack: poll every sec to see if the popup is still open.
+      // if it's closed, it means we've successfully signed in; otherwise,
+      // check the #allow button's value (it's an <input> tag, for whatever
+      // reason!) - if it's "Authorize app" then we click it again, otherwise
+      // keep polling until popup closes. 
+      while (true) {
+        browser.sleep(1000);
+        var windowCount = browser.windowHandles().length;
+        if (windowCount > 1) {
+          // popup still open
+          var button
+          var buttonText
+          try {
+            button = browser.find('#allow');
+            buttonText = button.getValue();
+          } catch (e) {
+            // if we get an error here, it's a stale element
+            // reference, so the popup was closed when we were getting
+            // the button text; we're done.
+            break;
+          }
+          // second click is required.
+          if (buttonText === 'Authorize app') {
+            button.click();
+            break;
+          }
+        }
       }
-    }
-  },
-  {
-    name: 'weibo',
-    userDisplayName: 'AuthMeteor',
-    waitForPopupContents: function () {
-      expect(browser.find('p.oauth_main_info', 30000).text()).to.contain("meteor_auth_qa");
-    },
-    signInInPopup: function () {
-      browser.find('#userId').type(email);
-      browser.find('#passwd').type(password);
-      browser.find('a[action-type=submit]').click();
     }
   },
   {
@@ -103,4 +114,20 @@ module.exports = [
       browser.find('input[type=submit]').click();
     }
   }
+
+  // Weibo is excluded from the tests because it requires Captcha in an
+  // unpredictable fashion.
+
+  // , {
+  //   name: 'weibo',
+  //   userDisplayName: 'AuthMeteor',
+  //   waitForPopupContents: function () {
+  //     expect(browser.find('p.oauth_main_info', 30000).text()).to.contain("meteor_auth_qa");
+  //   },
+  //   signInInPopup: function () {
+  //     browser.find('#userId').type(email);
+  //     browser.find('#passwd').type(password);
+  //     browser.find('a[action-type=submit]').click();
+  //   }
+  // }
 ];
