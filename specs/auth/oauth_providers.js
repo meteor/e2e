@@ -83,6 +83,8 @@ module.exports = [
             button.click();
             break;
           }
+        } else {
+          break;
         }
       }
     }
