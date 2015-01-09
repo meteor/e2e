@@ -108,6 +108,14 @@ module.exports = [
     name: 'meetup',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
+      if (browser.name === "safari") {
+        // For some reason, on Meetup login under Safari-on-Selenium,
+        // trying to run any action immediately after focusing the popup
+        // window leads to Selenium hanging. All webdriver operations
+        // seem to exhibit the same behavior. So unfortunately, using
+        // a long timeout.
+        browser.sleep(10000);
+      }
       expect(browser.find('#paneLogin', 30000).text()).to.contain("Meteor Auth QA");
     },
     signInInPopup: function () {
