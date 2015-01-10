@@ -48,6 +48,15 @@ module.exports = [
     name: 'twitter',
     userDisplayName: 'Auth Meteor',
     waitForPopupContents: function () {
+      if (browser.name === "safari") {
+        // For some reason, on Twitter login under Safari-on-Selenium,
+        // trying to run any action immediately after focusing the
+        // popup window leads to Selenium hanging. All webdriver
+        // operations seem to exhibit the same behavior. So
+        // unfortunately, we use a long timeout to wait for the popup
+        // to "stabilize" enough for Selenium operations to not hang.
+        browser.sleep(10000);
+      }
       expect(browser.find('div.auth h2', 30000).text()).to.contain("Authorize Meteor Auth QA");
     },
     signInInPopup: function () {
@@ -110,10 +119,11 @@ module.exports = [
     waitForPopupContents: function () {
       if (browser.name === "safari") {
         // For some reason, on Meetup login under Safari-on-Selenium,
-        // trying to run any action immediately after focusing the popup
-        // window leads to Selenium hanging. All webdriver operations
-        // seem to exhibit the same behavior. So unfortunately, using
-        // a long timeout.
+        // trying to run any action immediately after focusing the
+        // popup window leads to Selenium hanging. All webdriver
+        // operations seem to exhibit the same behavior. So
+        // unfortunately, we use a long timeout to wait for the popup
+        // to "stabilize" enough for Selenium operations to not hang.
         browser.sleep(10000);
       }
       expect(browser.find('#paneLogin', 30000).text()).to.contain("Meteor Auth QA");
