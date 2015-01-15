@@ -65,7 +65,7 @@ describe('A small app with accounts', function () {
         browser.wait('#login-sign-in-link', 30000);
 
         openDropdown();
-        expect(browser.find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
+        expect(browser.find("#login-buttons-" + provider.name).text()).to.contain("Sign in with INTENTIONAL FAILURE");
         startSignIn(provider.name);
 
       });
