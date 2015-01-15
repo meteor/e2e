@@ -51,12 +51,16 @@ describe('A small app with accounts', function () {
 
   providersToRun().forEach(function (provider) {
     describe("- " + provider.name + ' login', function () {
+      // these steps are sequential and stateful in nature, so stop
+      // after first failures.
+      this.bail(true);
+
       before(function () {
         browser.focusMainWindow();
         browser.refresh();
       });
 
-      it('signs in', function () {
+      it('open login popup', function () {
 
         browser.wait('#login-sign-in-link', 30000);
 
@@ -64,20 +68,29 @@ describe('A small app with accounts', function () {
         expect(browser.find("#login-buttons-" + provider.name).text()).to.contain("Sign in with");
         startSignIn(provider.name);
 
+      });
+
+      it('popup loads', function () {
         // Should show a popup. Test that when we close the pop-up we
         // don't lose the ability to then log in again afterwards.
         browser.focusSecondWindow();
         provider.waitForPopupContents();
         browser.close();
-
         browser.focusMainWindow();
+      });
+
+      it('open login popup again', function () {
         startSignIn(provider.name);
         browser.focusSecondWindow();
         provider.waitForPopupContents();
+      });
+
+      it('sign in popup', function () {
         provider.signInInPopup();
-
         browser.focusMainWindow();
+      });
 
+      it('signs in in app', function () {
         expectSignedIn(provider.userDisplayName);
       });
 
@@ -86,16 +99,20 @@ describe('A small app with accounts', function () {
         signOut();
       });
 
-      it('signs in a second time with (almost) no prompting', function () {
+      it('open login popup after having previously logged in', function () {
         openDropdown();
         startSignIn(provider.name);
+      });
 
-        if (provider.signInInSecondPopup) {
+      if (provider.signInInSecondPopup) {
+        it('sign in popup after having previously logged in', function () {
           browser.focusSecondWindow();
           provider.signInInSecondPopup();
           browser.focusMainWindow();
-        }
+        });
+      };
 
+      it('signs in in app', function () {
         expectSignedIn(provider.userDisplayName);
       });
 
