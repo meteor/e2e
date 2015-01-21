@@ -70,6 +70,10 @@ describe('Auth Email -', function () {
 
   describe('Forgot Password', function () {
 
+    // these steps are sequential and stateful in nature, so stop
+    // after first failures.
+    this.bail(true);
+
     it('should send correct email', function () {
       browser.find('#create-test-account').click();
       browser.wait('#server-action-ok', 30000);
@@ -150,6 +154,10 @@ describe('Auth Email -', function () {
 
   describe('Verification Email', function () {
 
+    // these steps are sequential and stateful in nature, so stop
+    // after first failures.
+    this.bail(true);
+
     before(function () {
       browser.refresh();
       browser.find('#remove-test-account').click();
@@ -207,6 +215,10 @@ describe('Auth Email -', function () {
   });
 
   describe('Accounts.sendEnrollmentEmail', function () {
+
+    // these steps are sequential and stateful in nature, so stop
+    // after first failures.
+    this.bail(true);
 
     before(function () {
       browser.refresh();

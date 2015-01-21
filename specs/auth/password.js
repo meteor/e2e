@@ -1,5 +1,9 @@
 describe('Password based login', function () {
 
+  // these steps are sequential and stateful in nature, so stop
+  // after first failures.
+  this.bail(true);
+
   // use a browser-specific email here to ensure each browser creates
   // a different test account. this is retrieved during the test and
   // reused in multiple specs.
