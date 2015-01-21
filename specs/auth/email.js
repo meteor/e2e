@@ -274,6 +274,7 @@ describe('Auth Email -', function () {
 
     after(function () {
       closeSecondWindow();
+      signOut();
     });
 
   });
