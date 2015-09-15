@@ -28,8 +28,9 @@ module.exports = [
     },
     signInInPopup: function () {
       browser.find('#Email').type(email);
-      browser.find('#Passwd').type(password);
-      browser.find('input[name=signIn]').click();
+      browser.find('#next').click();
+      browser.find('#Passwd', 3000).type(password);
+      browser.find('#signIn').click();
     }
   },
   {
