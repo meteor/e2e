@@ -27,10 +27,26 @@ module.exports = [
       expect(browser.find('h2', 30000).text()).to.contain("Sign in with your Google Account");
     },
     signInInPopup: function () {
-      browser.find('#Email').type(email);
-      browser.find('#next').click();
-      browser.find('#Passwd', 3000).type(password);
-      browser.find('#signIn').click();
+      // Update Sep. 2015:
+      // Google now uses a different login UX when the browser supports CSS
+      // transitions, but keeps the old UX in older browsers (IE8,IE9)
+      // we need to execute different test steps here
+      var usingNewUX = true
+      try {
+        browser.find('#next')
+      } catch (e) {
+        usingNewUX = false
+      }
+      if (usingNewUX) {
+        browser.find('#Email').type(email);
+        browser.find('#next').click();
+        browser.find('#Passwd', 3000).type(password);
+        browser.find('#signIn').click();
+      } else {
+        browser.find('#Email').type(email);
+        browser.find('#Passwd').type(password);
+        browser.find('#signIn').click();
+      }
     }
   },
   {
