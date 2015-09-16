@@ -182,4 +182,7 @@ module.exports.forEach(function (provider) {
   if (!provider.signInInRedirectPage) {
     provider.signInInRedirectPage = provider.signInInPopup;
   }
+  if (provider.signInInSecondPopup && !provider.signInInSecondRedirect) {
+    provider.signInInSecondRedirect = provider.signInInSecondPopup;
+  }
 });

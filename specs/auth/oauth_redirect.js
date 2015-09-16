@@ -77,14 +77,16 @@ describe('A small app with accounts', function () {
         provider.waitForRedirectPage();
       });
 
-      it('cancel sign in', function () {
-        provider.cancelSignIn();
-        expectSignedOut();
-      });
+      if (provider.cancelSignIn) {
+        it('cancel sign in', function () {
+          provider.cancelSignIn();
+          expectSignedOut();
+          startSignIn(provider.name);
+          provider.waitForRedirectPage();
+        });
+      }
 
       it('perform sign in', function () {
-        startSignIn(provider.name);
-        provider.waitForRedirectPage();
         provider.signInInRedirectPage();
       });
 
