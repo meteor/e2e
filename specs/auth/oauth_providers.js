@@ -31,11 +31,11 @@ module.exports = [
       // Google now uses a different login UX when the browser supports CSS
       // transitions, but keeps the old UX in older browsers (IE8,IE9)
       // we need to execute different test steps here
-      var usingNewUX = true
+      var usingNewUX = true;
       try {
-        browser.find('#next')
+        browser.find('#next');
       } catch (e) {
-        usingNewUX = false
+        usingNewUX = false;
       }
       if (usingNewUX) {
         browser.find('#Email').type(email);
@@ -93,8 +93,8 @@ module.exports = [
         var windowCount = browser.windowHandles().length;
         if (windowCount > 1) {
           // popup still open
-          var button
-          var buttonText
+          var button;
+          var buttonText;
           try {
             button = browser.find('#allow');
             buttonText = button.getValue();
@@ -168,3 +168,15 @@ module.exports = [
   //   }
   // }
 ];
+
+// by default, we can reuse the same sign-in behavior in
+// both popup and redirect flows, unless explicitly
+// overwritten.
+module.exports.forEach(function (provider) {
+  if (!provider.waitForRedirectPage) {
+    provider.waitForRedirectPage = provider.waitForPopupContents;
+  }
+  if (!provider.signInInRedirectPage) {
+    provider.signInInRedirectPage = provider.signInInPopup;
+  }
+});
