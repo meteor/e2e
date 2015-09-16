@@ -59,6 +59,9 @@ module.exports = [
       browser.find('#email').type(email);
       browser.find('#pass').type(password);
       browser.find('input[name=login]').click();
+    },
+    cancelSignIn: function () {
+      browser.find('input[name=cancel]').click();
     }
   },
   {

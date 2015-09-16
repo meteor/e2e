@@ -40,9 +40,13 @@ describe('A small app with accounts', function () {
     expect(browser.find('#login-name-link', 30000).text()).to.contain(userDisplayName);
   };
 
+  var expectSignedOut = function () {
+    expect(browser.find("#login-sign-in-link", 30000).text()).to.contain("Sign in ▾");
+  };
+
   var signOut = function () {
     browser.find('#login-buttons-logout').click();
-    expect(browser.find("#login-sign-in-link", 30000).text()).to.contain("Sign in ▾");
+    expectSignedOut();
   };
 
   before(function () {
@@ -56,7 +60,6 @@ describe('A small app with accounts', function () {
       this.bail(true);
 
       before(function () {
-        browser.focusMainWindow();
         browser.refresh();
       });
 
@@ -74,7 +77,14 @@ describe('A small app with accounts', function () {
         provider.waitForRedirectPage();
       });
 
+      it('cancel sign in', function () {
+        provider.cancelSignIn();
+        expectSignedOut();
+      });
+
       it('perform sign in', function () {
+        startSignIn(provider.name);
+        provider.waitForRedirectPage();
         provider.signInInRedirectPage();
       });
 
